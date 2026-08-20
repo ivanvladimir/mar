@@ -1,16 +1,22 @@
 conversations:
   - 'respSi.yaml'
   - 'respNo.yaml'
-slots:
-  - respiracion
+
+plugins:
+  - filters.py
+
+templates:
+  - messages.yaml
+
 strategies:
   respiracion:
     - say "El siguiente ejercicio de re-entrenamiento de la respiración es una buena opción para relajarnos 💕🫁."
     - say "Sin embargo, si presentas algún problema respiratorio que te impida realizarlo, es mejor que no lo practiques 😊. **¿Intentamos el ejercicio?**."
     - say "Escribe Si o No."
-    - input respiracion | yesno
+    - listen respiracion | .yesno | set respiracion
 script:
   - say INI_VENTILACION
   - solve respiracion
   - if respiracion == True then solve respSi
-  - if opcion==1 and respiracion == False then solve respNo
+  - .value "opcion==1 and respiracion==False" | set _cond_resp_no
+  - if _cond_resp_no == True then solve respNo

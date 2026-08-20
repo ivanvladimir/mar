@@ -1,16 +1,16 @@
 conversations:
   - 'categorizacion.yaml'
 
-slots:
-  - terminar
+plugins:
+  - filters.py
 
 strategies:
   terminar2:
     - say "Muy bien 😊. **¿Continuamos con nuestra conversación?**"
     - say "Escribe Si o No"
-    - input cont3 | yesno
+    - listen cont3 | .yesno | set cont3
   despedida2:
-    - say "De acuerdo, por si lo necesitas, en mi menú está el ejercicio de re-entrenamiento de la respiración 🫁, el directorio con teléfonos 📞 que te podrían ser de utilidad ahora o en los próximos días e información sobre posibles síntomas. Cuídate mucho y regresa cuando gustes {} 😊.".format(username)
+    - say "De acuerdo, por si lo necesitas, en mi menú está el ejercicio de re-entrenamiento de la respiración 🫁, el directorio con teléfonos 📞 que te podrían ser de utilidad ahora o en los próximos días e información sobre posibles síntomas. Cuídate mucho y regresa cuando gustes {name} 😊."
 
 script:
   - solve terminar2

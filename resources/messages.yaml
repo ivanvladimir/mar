@@ -2,7 +2,7 @@ VIDEO:
     - MSG:
         - TEXT: |
             <video width="480" autoplay controls>
-            <source src="/cv/static/img/movie.mov"
+            <source src="/static/mar/img/movie.mov"
                 type="video/mp4">
             </video>
 
@@ -21,7 +21,7 @@ MENU:
 INTRO:
     - MSG:
         - TEXT: |
-            Hola {username}! 
+            Hola {name}!
 
             Soy **Mar**,
 
@@ -57,56 +57,58 @@ INI_ESCUCHA_ACTIVA:
 INI_VENTILACION:
     - MSG:
         - TEXT: |
-             <span style="color:tomato;">Tras un accidente de tránsito</span>, es normal experimentar malestar. Podemos llegar a sentirnos confundidos, pensar que nos sobrepasa la situación o sentir nuestro corazón y respiración alterados ❤️🫁. Pero no te preocupes, podemos trabajar en equipo e intentar que te sientas más tranquil@ 😉.
+            <span style="color:tomato;">Tras un accidente de tránsito</span>, es normal experimentar malestar.
+
+            Podemos llegar a sentirnos confundidos, pensar que nos sobrepasa la situación o sentir nuestro corazón y respiración alterados ❤️🫁. Pero no te preocupes, podemos trabajar en equipo e intentar que te sientas más tranquil@ 😉.
 
 DIRECTORIO:
     - MSG:
         - TEXT: |
-            <img width="480" src="/cv/static/img/directorio.png">
+            <img width="480" src="/static/mar/img/directorio.png">
             </img>
             <hr>
-            <a type="button" class="btn btn-success" href="/cv/static/img/directorio.png" download>Descargar</a>
+            <a type="button" class="btn btn-success" href="/static/mar/img/directorio.png" download>Descargar</a>
 
 
 SINTOMAS:
     - MSG:
         - TEXT: |
-            <img width="480" src="/cv/static/img/sintomas1.png">
+            <img width="480" src="/static/mar/img/sintomas1.png">
             </img>
             <hr>
-            <a type="button" class="btn btn-success" href="/cv/static/img/sintomas1.png" download>Descargar</a>
+            <a type="button" class="btn btn-success" href="/static/mar/img/sintomas1.png" download>Descargar</a>
         - TEXT: |
-            <img width="480" src="/cv/static/img/sintomas2.png">
+            <img width="480" src="/static/mar/img/sintomas2.png">
             </img>
             <hr>
-            <a type="button" class="btn btn-success" href="/cv/static/img/sintomas2.png" download>Descargar</a>
+            <a type="button" class="btn btn-success" href="/static/mar/img/sintomas2.png" download>Descargar</a>
         - TEXT: |
-            <img width="480" src="/cv/static/img/sintomas3.png"<
+            <img width="480" src="/static/mar/img/sintomas3.png">
             </img>
             <hr>
-            <a type="button" class="btn btn-success" href="/cv/static/img/sintomas3.png" download>Descargar</a>
+            <a type="button" class="btn btn-success" href="/static/mar/img/sintomas3.png" download>Descargar</a>
         - TEXT: |
-            <img width="480" src="/cv/static/img/sintomas4.png"<
+            <img width="480" src="/static/mar/img/sintomas4.png">
             </img>
             <hr>
-            <a type="button" class="btn btn-success" href="/cv/static/img/sintomas4.png" download>Descargar</a>
+            <a type="button" class="btn btn-success" href="/static/mar/img/sintomas4.png" download>Descargar</a>
 
 
 RECOMENDACIONES:
     - MSG:
         - TEXT: |
-            <img width="480" src="/cv/static/img/recomendaciones.png"
+            <img width="480" src="/static/mar/img/recomendaciones.png">
             </img>
             <hr>
-            <a type="button" class="btn btn-success" href="/cv/static/img/recomendaciones.png" download>Descargar</a>
+            <a type="button" class="btn btn-success" href="/static/mar/img/recomendaciones.png" download>Descargar</a>
 
 ALARMA:
     - MSG:
         - TEXT: |
-            <img width="480" src="/cv/static/img/senalesalarma.png"
+            <img width="480" src="/static/mar/img/senalesalarma.png">
             </img>
             <hr>
-            <a type="button" class="btn btn-success" href="/cv/static/img/senalesalarma.png" download>Descargar</a>
+            <a type="button" class="btn btn-success" href="/static/mar/img/senalesalarma.png" download>Descargar</a>
 
 TERMINAR:
     - MSG:

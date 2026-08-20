@@ -1,70 +1,82 @@
 conversations:
   - 'categorizacion.yaml'
 
+plugins:
+  - filters.py
+
+templates:
+  - messages.yaml
+
 strategies:
   resSi:
     - say "Muy bien. Para explicar mejor el ejercicio 🫁, he preparado el **siguiente video** . Oprime _play_ para comenzar a ver el viedeo. Si en cualquier momento lo deseas, puedes parar el video 😊."
 
   set_video:
-    - set_slot video_visto False
+    - .value False | set video_visto
 
   ask_video:
     - say "**¿Ya terminaste el ejercicio?**"
     - say "Escribe Si o No 😊"
-    - input res_video_visto | yesno
-    - set_slot video_visto True
-    - if res_video_visto then solve set_video
+    - listen res_video_visto | .yesno | set res_video_visto
+    - .value True | set video_visto
+    - if res_video_visto == True then solve set_video
 
   cinco_cosas:
     - say "Excelente. La técnica 5-4-3-2-1 nos ayudará a conectarnos con nuestros 5 sentidos👂 ✋ 👃 👁️ 👄"
     - say "Te pido por favor que durante todo el ejercicio, te esfuerces en enfocar tu atención en cosas y estímulos que sean agradables para ti ❤️😊."
     - say "**¿Comenzamos?**😊"
     - say "Escribe Si o No"
-    - input cont | yesno
+    - listen cont | .yesno | set cont
   cinco_cosas_cont:
     - say "Escribe 5 cosas que puedas ver 👁️ 👀 😊... "
     - say "Observa los colores, las formas y los detalles a tu alrededor 🌸☀️. "
-    - input respuesta
+    - listen respuesta
     - say "¡Muy bien! 😊❤️"
     - say "Ahora, escribe 4 cosas que puedas sentir con tu cuerpo ✋ 🤗 🦶..."
     - say "Como la sensación de alguna tela o el clima sobre tu piel 👖 👚 ☀️🌧️"
-    - input respuesta
+    - listen respuesta
     - say "Excelente trabajo 👏❤️"
     - say "Continúa escribiendo 3 cosas que puedas oir 👂🎶..."
     - say "Pon atención a los sonidos de tu alrededor, pueden estar lejos o cerca de ti ⏰ 🍁 🌲 🎶."
-    - input respuesta
+    - listen respuesta
     - say "¡Lo estás haciendo muy bien! 😊❤️"
     - say "Ahora, respira profundamente y escribe 2 cosas que puedas oler 👃 ..."
     - say "Intenta identificar los aromas que estén cerca de ti 🌸🕯️"
-    - input respuesta
+    - listen respuesta
     - say "Muy buenas respuestas ❤️."
     - say "Para terminar, escribe 1 cosa que puedas saborear 👄..."
     - say "Imagina algún alimento que te guste, su sabor, temperatura y textura 🍬 🍪 🍫"
-    - input respuesta
+    - listen respuesta
     - say "¡Excelente! Has completado el ejercicio 5-4-3-2-1 de manera admirable 😉❤️. Espero que hayas logrado establecer una conexión con tus sentidos y experimentar sensaciones gratificantes 😁."
     - say "Recuerda que puedes practicar esta técnica siempre que lo desees 🐶❤️."
     - say "**¿Deseas continuar la conversación?**"
     - say "Escribe Si o No"
-    - input ask_cont | yesno
+    - listen ask_cont | .yesno | set ask_cont
   full:
     - say "**¿Te gustaría probar otra técnica de relajación?** 😊 Te recomiendo practicarla solo si ya te encuentras en un entorno seguro y fuera del lugar del accidente. Si  no es así, te sugiero no probar esta técnica por ahora."
     - say "Escribe Si o No"
-    - input otro_ejercicio | yesno
-    - if opcion==1 and otro_ejercicio==True then solve cinco_cosas
-    - if opcion==1 and otro_ejercicio==True and cont==True then solve cinco_cosas_cont
-    - if opcion==1 and otro_ejercicio==True and cont==False then solve categorizacion
-    - if opcion==1 and otro_ejercicio==True and ask_cont==True then solve categorizacion
-    - if opcion==1 and otro_ejercicio==True and ask_cont==False then say TERMINAR
-    - if opcion==1 and otro_ejercicio==False and cont==False then solve categorizacion
+    - listen otro_ejercicio | .yesno | set otro_ejercicio
+    - .value "opcion==1 and otro_ejercicio==True" | set _cond_ejercicio
+    - if _cond_ejercicio == True then solve cinco_cosas
+    - .value "opcion==1 and otro_ejercicio==True and cont==True" | set _cond_cont_si
+    - if _cond_cont_si == True then solve cinco_cosas_cont
+    - .value "opcion==1 and otro_ejercicio==True and cont==False" | set _cond_cont_no
+    - if _cond_cont_no == True then solve categorizacion
+    - .value "opcion==1 and otro_ejercicio==True and ask_cont==True" | set _cond_ask_si
+    - if _cond_ask_si == True then solve categorizacion
+    - .value "opcion==1 and otro_ejercicio==True and ask_cont==False" | set _cond_ask_no
+    - if _cond_ask_no == True then say TERMINAR
+    - .value "opcion==1 and otro_ejercicio==False and cont==False" | set _cond_no_ejercicio
+    - if _cond_no_ejercicio == True then solve categorizacion
 
 
 script:
   - solve resSi
-  - set_slot video_visto True
-  - set_slot cont False
+  - .value True | set video_visto
+  - .value False | set cont
   - say VIDEO
   - while video_visto then solve ask_video
   - say "Lo hiciste muy bien 💕. Espero que este ejercicio te haya ayudado a relajarte 😊💙."
   - if opcion==2 then say "Puedes regresar siempre que lo desees a realizar este ejercicio conmigo 😊🫁"
   - if opcion==1 then solve full
-  
+

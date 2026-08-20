@@ -1,17 +1,24 @@
-slots:
-  - contacto
-  - familiar
+conversations:
+  - 'directorio.yaml'
+  - 'psico_educacion.yaml'
+
+plugins:
+  - filters.py
+
+templates:
+  - messages.yaml
+
 strategies:
   contacto6:
     - say "Quisiera preguntarte si **planeas ponerte en contacto con algún ser querido cuando terminemos de platicar o en un tiempo corto** 💙📞."
     - say "Escribe Si o No"
-    - input contacto | yesno
+    - listen contacto | .yesno | set contacto
 
   familiar6:
     - say "**¿Con quién te gustaría ponerte en contacto lo más pronto posible?**"
     - say "Escribe su nombre o apodo 😊❤️📞"
-    - input familiar
-    - say "Me parece una excelente idea que te pongas en contacto con {}. Contar con una red de apoyo en estas situaciones es benéfico para ayudarte a sentir mejor 💙👍.".format(familiar)
+    - listen familiar
+    - say "Me parece una excelente idea que te pongas en contacto con {familiar}. Contar con una red de apoyo en estas situaciones es benéfico para ayudarte a sentir mejor 💙👍."
     - solve directorio
 
   respNo2:
@@ -22,7 +29,7 @@ strategies:
     - say "Antes de terminar, me gustaría brindarte algunos consejos e información para los próximos días 😊❤️."
     - say "**¿Te parece bien?**"
     - say "Escribe Si o No"
-    - input querer | yesno
+    - listen querer | .yesno | set querer
 
   psicoeducacion6:
     - solve psico_educacion
@@ -32,4 +39,5 @@ script:
   - if contacto == True then solve familiar6
   - if contacto == False then solve respNo2
   - if opcion==1 then solve querer6
-  - if querer==False then say TERMINAR else solve psicoeducacion6
+  - if querer==False then say TERMINAR
+  - if querer==True then solve psicoeducacion6

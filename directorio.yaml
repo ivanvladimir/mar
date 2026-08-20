@@ -1,3 +1,6 @@
+templates:
+  - messages.yaml
+
 strategies:
     mensajeFinDir:
       - say "No dudes en ponerte en contacto con quien necesites. Recuerda que también puedes practicar el reentrenamiento de la respiración conmigo y acceder a información importante sobre los síntomas que podrías experimentar 😊. Toda la información está en mi menú. Cuenta conmigo siempre 🐶❤️."

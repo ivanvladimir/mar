@@ -1,39 +1,34 @@
 conversations:
   - 'derivacion.yaml'
-slots:
-  - preocupacion1
-  - preocupacion2
-  - preocupacion3
-  - otra
-  - otra2
-  - bandera
-  - jerarquia
+
+plugins:
+  - filters.py
 
 strategies:
   intro3:
     - say "Teniendo en cuenta que hay situaciones que requieren atención inmediata y otras que pueden abordarse con calma más adelante, identifiquemos junt@s las necesidades urgentes que puedas tener 😊..."
   preocupacion1:
     - say "Platícame por favor alguna necesidad urgente que tengas:"
-    - input preocupacion1
+    - listen preocupacion1
   otra3:
     - say "Muy bien👏👍😉, **¿hay algo más que necesites?**"
     - say "Escribe Si o No"
-    - input otra | yesno
+    - listen otra | .yesno | set otra
   preocupacion2:
     - say "okay, platícame qué más necesitas 😊."
-    - input preocupacion2
-    - set_slot bandera True
+    - listen preocupacion2
+    - .value True | set bandera
   otra2:
-    - say "Lo estás haciendo muy bien {} 💙👏".format(username)
+    - say "Lo estás haciendo muy bien {name} 💙👏"
     - say "**¿Existe algo más que necesites justo ahora?**"
     - say "Escribe Si o No"
-    - input otra2 |yesno
+    - listen otra2 | .yesno | set otra2
   preocupacion3:
     - say "Muy bien, ¿qué otra cosa necesitas?"
-    - input preocupacion3
+    - listen preocupacion3
   gracias:
-    - set_slot said_preocupacion False
-    - say "**Muchas gracias {}** por compartir esto conmigo 💕.".format(username)
+    - .value False | set said_preocupacion
+    - say "**Muchas gracias {name}** por compartir esto conmigo 💕."
       #- if preocupacion3 then say f"Entiendo que lo que necesitas justo ahora es **{preocupacion1}**, **{preocupacion2}** y **{preocupacion3}**"
       #- if preocupacion3 then set_slot said_preocupacion "true"
       #- if preocupacion2 and said_preocupacion!="true" then say f"Entiendo que lo que necesitas justo ahora es **{preocupacion1}** y **{preocupacion2}**"
@@ -41,7 +36,7 @@ strategies:
       # - if preocupacion1 and said_preocupacion!="true" then say f"Entiendo que lo que necesitas justo ahora es **{preocupacion1}**"
   jerarquia:
     - say "De estas necesidades, ¿cuál es la más urgente para ti?"
-    - input jerarquia
+    - listen jerarquia
   tips:
     - say "Gracias por confiar en mí 💕🐶."
     - say "Recuerda que es importante tratar de resolver las necesidades de una en una, empezando por la más urgente. Siempre intenta comenzar con aquellas necesidades relacionadas con  nuestra salud física y psicológica 😊❤️🧠."

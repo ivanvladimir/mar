@@ -1,8 +1,10 @@
 conversations:
   - 'necesidadSi.yaml'
   - 'necesidadNo.yaml'
-slots:
-  - necesidad
+
+plugins:
+  - filters.py
+
 strategies:
   intro2:
     - say "A veces cuando nos enfrentamos a situaciones desafiantes nos puede costar trabajo identificar qué necesitamos en ese momento 😊💕."
@@ -11,7 +13,7 @@ strategies:
   necesidad2:
     - say "Por lo tanto, me gustaría preguntarte, **¿consideras que tienes alguna necesidad urgente en este momento?**"
     - say 'Escribe Si o No'
-    - input necesidad | yesno
+    - listen necesidad | .yesno | set necesidad
 script:
   - solve intro2
   - solve necesidad2

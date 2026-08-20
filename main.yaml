@@ -6,13 +6,11 @@
 #          Ivan Meza
 
 settings:
-    system_name: "[blue]Mar[/blue]"
-    user_name:   "[aquamarine1]Usuari@[/aquamarine1]"
-
-url_apis:
-  zs: "http://api_zeroshot:5100/zeroshot/"
+    _name_system: "Mar"
+    _name_user:   "Usuari@"
 
 conversations:
+  - 'name.yaml'
   - 'opcionA.yaml'
   - 'completa.yaml'
   - 'ventilacion.yaml'
@@ -23,28 +21,21 @@ conversations:
   - 'necesidadSi.yaml'
   - 'necesidadNo.yaml'
   - 'categorizacion.yaml'
-  - 'necesidadSi.yaml'
-  - 'necesidadNo.yaml'
   - 'respNo.yaml'
   - 'respSi.yaml'
   - 'eval.yaml'
 
+plugins:
+  - filters.py
+
 templates:
-    - 'resources/messages.yaml'
-
-regex:
-    name:
-        - '(([Mm][Ii] [Nn][Oo0][Mm][Bb][Rr][Ee] [Ee][SsZz]|[Ee][SsZz]|[Ss][Oo0][YyIi]|[Mm][Ee] (LL|Ll|ll|lL)[Aa][Mm][Oo0]) (?P<name>\S+)|(.*))'
-        - '(?P<name>.+)'
-
-slots:
-  - opcion
+    - messages.yaml
 
 strategies:
   intro_menu:
     - say INTRO
     - say MENU
-    - input opcion | number
+    - listen opcion | .to_number | set opcion
 
   main:
     - solve intro_menu
@@ -52,12 +43,13 @@ strategies:
     - if opcion == 2 then solve ventilacion
     - if opcion == 3 then solve directorio
     - if opcion == 4 then solve psico_educacion
-    - say "Regresa cuando gustes😊. Cuenta con Mar siempre que lo necesites, {} ❤️🐶❤️.".format(username)
+    - say "Regresa cuando gustes😊. Cuenta con Mar siempre que lo necesites, {name} ❤️🐶❤️."
       #- say "Antes de que nos despidamos, quiero felicitarte por todo lo que lograste durante nuestro tiempo junt@s ❤️☺️"
     - say "Cuídate mucho. Gracias por haber confiado en mi el día de hoy ❤️😄"
     - say "¿Quieres regresar al menu princial?"
-    - input loop | yesno
+    - listen loop | .yesno | set loop
 
 script:
-  - set_slot loop True
+  - if not name then solve name
+  - .value True | set loop
   - while loop then solve main

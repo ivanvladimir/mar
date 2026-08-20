@@ -1,16 +1,16 @@
 conversations:
   - 'derivacion.yaml'
-slots:
-  - terminar
-conversations:
-  - 'derivacion.yaml'
+
+plugins:
+  - filters.py
+
 strategies:
   terminar:
     - say "Entiendo 😊. **¿Continuamos con nuestra conversación?**"
     - say "Escribe Si o No"
-    - input cont4 | yesno
+    - listen cont4 | .yesno | set cont4
   despedida:
-    - say "De acuerdo, en mi menú está disponible el ejercicio de re-entrenamiento de la respiración 🫁, información sobre tus posibles síntomas y el directorio con teléfonos 📞 que te podrían ser de utilidad ahora o en los próximos días. Cuídate mucho y regresa cuando gustes {} 😊.".format(username)
+    - say "De acuerdo, en mi menú está disponible el ejercicio de re-entrenamiento de la respiración 🫁, información sobre tus posibles síntomas y el directorio con teléfonos 📞 que te podrían ser de utilidad ahora o en los próximos días. Cuídate mucho y regresa cuando gustes {name} 😊."
 script:
   - solve terminar
   - if cont4 == False then solve despedida

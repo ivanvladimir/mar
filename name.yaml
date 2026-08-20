@@ -1,0 +1,9 @@
+strategies:
+    name:
+        - say "¿Puedes decirme tu nombre por favor?"
+        - listen name | remember
+        - say "Mucho gusto en conocerte, {name}."
+
+script:
+  - if not name then solve name
+  - return name

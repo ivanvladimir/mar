@@ -1,10 +1,12 @@
-slots:
-  - nombre
-  - sentirMal
-
 conversations:
   - 'escuchaActiva.yaml'
   - 'ventilacion.yaml'
+
+plugins:
+  - filters.py
+
+templates:
+  - messages.yaml
 
 strategies:
   saludo:
@@ -14,7 +16,7 @@ strategies:
     - say PRIMERO
     - say "**¿Te gustaría platicarme qué te está generando malestar?**"
     - say 'Escribe Si o No'
-    - input sentirMal | yesno
+    - listen sentirMal | .yesno | set sentirMal
 
 script:
   - solve saludo

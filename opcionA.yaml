@@ -2,85 +2,59 @@ conversations:
   - 'seguroNO.yaml'
   - 'preguntas.yaml'
 
-regex:
-  sucidio:
-    - 'suicid* | morir | matar | daño | viv* | existir'
+plugins:
+  - filters.py
 
-slots:
-  - nombre
-  - lugarSeguro
-  - malestar
-  - malestarCont
-  - orignen
-  - suicidio
-  - pAñadir
-  - riesgo
-  - cosaImportante
-  - lineaSuicidio
-  - contactosEmergencia
-  - pApoyo
-  - apoyo
-  - pPlaticarMas
-  - pVideo
-  - escalaVideo
-  - preocupacion
-  - urgente
-  - pasos
-  - pPasos
-  - impedimento
-  - pSolucion
-  - quienSol
-  - contactoSol
-  - pasadoAntes
-  - estrategia
-  - sentirMejor
-  - despedida
+prompts:
+  - prompts.yaml
 
 strategies:
   nombre:
     - say "¿Puedes decirme tu nombre por favor?"
-    - input nombre
-    - remember nombre
+    - listen nombre | remember
   lugarSeguro:
-    - say "Hola {}".format(username)
+    - say "Hola {name}"
     - say "¿En este momento te encuentras en un lugar seguro donde no corras algún riesgo para que platiquemos con tranquilidad?"
-    - input lugarSeguro | yesno
+    - listen lugarSeguro | .yesno | set lugarSeguro
   malestar:
     - say "Dime en una escala del 1 al 10 ¿qué tan fuerte es tu malestar?"
     - say "Tomando en cuenta que el 1 es un malestar muy bajo y el 10 es uno muy alto."
-    - input malestar | number 
-    - remember malestar
+    - listen malestar | .to_number | remember malestar
   malestarCont:
     - say "Gracias por compartir esto conmigo."
-    - say "Entiendo que tu malestar es un {}".format(malestar)
+    - say "Entiendo que tu malestar es un {malestar}"
     - say "intentaremos que tu malestar disminuya."
   origen:
     - say "¿Podrías contarme qué es lo que pasa? ¿Qué te molestó o te hizo sentir mal? "
     - say "Recuerda que yo soy un agente virtual y solamente yo voy a leer lo que escribas."
     - say "Nadie te va a juzgar. Conmigo tus pensamientos están seguros. "
-    - input origen | regex//
-    - remember origen
+    - listen origen | remember
     - say "Muchas gracias por tener la confianza de compartir esto conmigo."
-    - say "Recuerda que estamos juntos en esto." 
+    - say "Recuerda que estamos juntos en esto."
+  evaluar_riesgo:
+    - llm_extract:
+        system: riesgo_suicida_system
+        user: riesgo_suicida_user
+        output: suicidio
   pAñadir:
     - say "Necesito estar 100% seguro de que te entendí correctamente. Tu problema es:"
-    - say origen
+    - say "{origen}"
     - say "¿Quisieras añadir algo más?"
-    - input pAñadir | yesno
+    - listen pAñadir | .yesno | set pAñadir
   cosaImportante:
     - say "cuéntame qué otra cosa es importante que yo sepa"
-    - input cosaImportante
+    - listen cosaImportante
   lineaSuicidio:
     - say "Entiendo que puedas sentirte mal y que sientas o pienses que esta situación te sobrepasa."
     - say "No estás solo en esto. Si me lo permites, te recomiendo ponerte en contacto con una de las líneas de ayuda de emergencia."
-    - say "Como la línea de la vida:   800 911 2000 ."
+    - 'say "Como la línea de la vida:   800 911 2000 ."'
     - say "En esta línea encontrarás a personas altamente calificadas que podrán auxiliarte."
     - say "Puedes llamar y posteriormente puedo brindarte algunas estrategias para que te sientas más relajado."
     - say "Aquí te estaré esperando cuando desees continuar."
   riesgo:
     - say "¿Tu o alguien más se encuentra herido o en riesgo?"
     - say "Ya sea por un incendio, un accidente de tráfico, un asalto, que alguien haya desaparecido, se haya cometido algún delito o que estés bajo la influencia de alguna droga."
-    - input riesgo | yesno
+    - listen riesgo | .yesno | set riesgo
   contactosEmergencia:
     - say "Te voy a brindar algunos números de emergencia para que te pongas en contacto con ellos si así lo requieres."
     - say "Mi entrenamiento tiene limitaciones por lo que si te encuentras en peligro y necesitas ayuda más directa te invito a que llames a alguno de los siguientes números:"
@@ -93,72 +67,72 @@ strategies:
   pApoyo:
     - say "Entiendo lo difícil o complicada que esta situación puede ser para ti."
     - say "¿Consideras que alguien te puede apoyar  o te puede acompañar en esta situación?"
-    - input pApoyo | yesno
+    - listen pApoyo | .yesno | set pApoyo
   apoyo:
     - say "muy bien, aquí estaré esperando."
     - say "Si deseas retomar nuestra conversación escribe continuar."
-    - input apoyo
+    - listen apoyo
   pPlaticarMas:
     - say "¿Te gustaría platicar más al respecto de la situación que te hizo sentir mal?"
-    - input pPlaticarMas | yesno
+    - listen pPlaticarMas | .yesno | set pPlaticarMas
   pVideo:
     - say "Es normal que tras una situación de crisis, nos sintamos desestabilizados, que nuestro corazón esté alterado"
     - say "que sudemos, que sintamos miedo, angustia e incluso tristeza y que nos sintamos confundidos."
-    - say "Quizá yo podría ayudarte a estar un poco más tranquil@. ¿Te gustaría que practiquemos una estrategia?
+    - say "Quizá yo podría ayudarte a estar un poco más tranquil@. ¿Te gustaría que practiquemos una estrategia?"
     - say "Podrás utilizarlos más tarde en tu casa si así lo deseas, y también te ayudaría a estar más tranquil@ los próximos días."
-    - input pVideo | yesno
+    - listen pVideo | .yesno | set pVideo
   video:
     - say "La forma como respiramos influye en nuestras emociones así que vamos a ensayar el re-entrenamiento de la respiración:"
     - say "consiste en inspirar, exhalar y luego esperar un momento con los pulmones vacíos hasta volver a inspirar."
     - say "Puedes reproducir el siguiente video para que te guíe en este proceso."
   escalaVideo:
     - say "En una escala del 1 al 10 donde 1 es muy mal y 10 es muy bien. ¿Cómo te sientes?"
-    - input escalaVideo
+    - listen escalaVideo
     - say "Es normal que después de un evento que nos desestabiliza, lleguemos a presentar malestar durante uno o varios días."
     - say "Pero si pones en práctica esta técnica cuando te sientas alterado, te ayudará a sentirte más relajado."
     - say "Te ayudará a dormir o a descansar y a despejar tu mente si lo necesitas."
   preocupacion:
     - say "Necesito preguntarte, ¿qué es lo que te preocupa más en estos momentos o qué es lo que más necesitas justo ahora?"
-    - input preocupacion
+    - listen preocupacion
   urgente:
     - say "Me doy cuenta de que pueden ser difíciles las cosas o situaciones que te preocupan. Entiendo que te sientas sobrepasado. "
     - say "¿Te parece si vamos paso a paso y nos enfocamos primero en lo más urgente?"
     - say "Platícame lo más urgente que necesites hacer ."
-    - input urgente
+    - listen urgente
   pasos:
     - say "¿Cuáles serían los pasos para llevar darle solución a la situación que más te preocupa y en qué orden lo tendrías que hacer?"
-    - input pasos
+    - listen pasos
   pPasos:
     - say "¿Estás en el mejor momento para llevar a cabo esta serie de pasos? "
-    - input pPasos | yesno
+    - listen pPasos | .yesno | set pPasos
   impedimento:
     - say "¿Qué es lo que te está impidiendo solucionar el problema?"
-    - input impedimento
+    - listen impedimento
   pSolucion:
     - say "¿Alguien te puede ayudar a solucionar tu problema?"
-    - input pSolucion | yesno
+    - listen pSolucion | .yesno | set pSolucion
   quienSol:
     - say "¿quién consideras que te puede apoyar?"
-    - input quienSol
+    - listen quienSol
   contactoSol:
     - say "¿Te ayudaría ponerte en contacto con esa persona ahora mismo?"
-    - input contactoSol | yesno
+    - listen contactoSol | .yesno | set contactoSol
   pasadoAntes:
     - say "¿Has pasado antes por una situación así?"
-    - input pasadoAntes | yesno
+    - listen pasadoAntes | .yesno | set pasadoAntes
   estrategia:
     - say "¿qué estrategias llevaste a cabo en esa situación para sentirte mejor o para solucionar el problema?"
-    - input estrategia
+    - listen estrategia
   sentirMejor:
     - say "Cuando nos pasan cosas inesperadas, es habitual pensar que no podemos enfrentar o resolver los problemas."
     - say "Tenemos que cambiar el ángulo desde donde estamos viendo el problema."
     - say "¿Qué es lo que te puede hacer sentir mejor en estos momentos?"
-    - say "Puede ser: hablarle o estar con algún familiar, amigo o ser querido, comer algo, dormir, caminar, ver una película."
-    - input sentirMejor
+    - 'say "Puede ser: hablarle o estar con algún familiar, amigo o ser querido, comer algo, dormir, caminar, ver una película."'
+    - listen sentirMejor
   escala:
     - say "Ahora, necesito preguntarte nuevamente."
     - say "En una escala del 1 al 10 donde 1 es muy mal y 10 es muy bien ¿cómo te sientes?"
-    - input escala | number
+    - listen escala | .to_number | set escala
   despedida:
     - say "Gracias por tener la confianza de compartir esto conmigo."
     - say "Entiendo que a veces existen situaciones que nos pueden generar malestar."
@@ -166,7 +140,7 @@ strategies:
     - say "Realiza las actividades o pon en práctica las estrategias que me comentaste que te harían sentir mejor."
     - say "Realiza el ejercicio de respiración las veces que consideres que sean necesarias."
     - say "Yo te preguntaré más tarde cómo te encuentras. ¿De acuerdo?"
-    - input despedida | yesno
+    - listen despedida | .yesno | set despedida
 script:
   - say "Entiendo que estás experimentando emociones muy fuertes y pensamientos angustiantes."
   - say "Gracias por solicitar mi ayuda. Esa es mi razón de existir."
@@ -179,6 +153,7 @@ script:
   - solve malestar
   - solve malestarCont
   - solve origen
+  - solve evaluar_riesgo
   - solve pAñadir
   - if pAñadir == True then solve cosaImportante
   - if suicidio == True then solve lineaSuicidio
@@ -198,13 +173,13 @@ script:
   - solve pasos
   - solve pPasos
   - if pPasos == True then say "De acuerdo, entonces, este será tu plan de acción para que lo llevas a cabo en cuanto terminemos de platicar."
-  - if pPasos == False then solve impedimiento
+  - if pPasos == False then solve impedimento
   - solve pSolucion
-  - if pSolucion == True solve quienSol
+  - if pSolucion == True then solve quienSol
   - solve contactoSol
   - if contactoSol == True then say "Okay, ponte en contacto con esa persona y aquí te estaré esperando por si aún requieres mi ayuda."
-  - if contactoSol == Fals then say "De acuerdo entonces continuemos."
-  - if pSolucion == False thenn say "No te preocupes, entiendo cómo te sientes y no estás solo en esto."
+  - if contactoSol == False then say "De acuerdo entonces continuemos."
+  - if pSolucion == False then say "No te preocupes, entiendo cómo te sientes y no estás solo en esto."
   - solve pasadoAntes
   - if pasadoAntes == True then solve estrategia
   - if pasadoAntes == False then solve sentirMejor

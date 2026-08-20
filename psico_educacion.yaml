@@ -1,4 +1,7 @@
 
+templates:
+  - messages.yaml
+
 strategies:
   consejos:
     - say "Es importante que conozcas las posibles reacciones que podrías experimentar en los próximos días. Esto te permitirá diferenciar lo que se considera un síntoma normal y cuándo es recomendable buscar ayuda profesional 😊:"
